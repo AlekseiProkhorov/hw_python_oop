@@ -4,10 +4,7 @@ def get_today_date():
     return dt.datetime.today().date()
 
 def check_if_7days_passed(date):
-    if (dt.datetime.today().date() - date).days <= 7:
-        return False
-    else: 
-        return True
+    return (dt.datetime.today().date() - date).days <= 7
 
 def format_currency(currency):
     if currency == 'rub':
@@ -36,7 +33,7 @@ class Calculator:
     def get_week_stats(self):
         spent_value = 0
         for record in self.records:
-            if not check_if_7days_passed(record.date):
+            if check_if_7days_passed(record.date):
                 spent_value += record.amount
         return spent_value
 
@@ -80,7 +77,7 @@ class Record:
     def __init__(self, amount, comment, date = None):
         self.amount = amount
         self.comment = comment
-        if date == None:
+        if not date:
             self.date = get_today_date()
         else:
             self.date = dt.datetime.strptime(date, '%d.%m.%Y').date()
